@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# display bash PID (without using pgrep bash)
+# Displays a list of currently running processes containing the bash keyword.
 # shellcheck disable=SC2009
-# ignore shellcheck suggestion for pgrep
 
-ps -auxf | grep "bash"
+ps -aux | grep bash
