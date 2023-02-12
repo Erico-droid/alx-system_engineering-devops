@@ -1,19 +1,40 @@
 #!/usr/bin/python3
-"""Exports to-do list information for a given employee ID to JSON format."""
+"""
+get data from an api based on the userd id that is passed as argument
+"""
 import json
 import requests
-import sys
+from sys import argv
+
 
 if __name__ == "__main__":
-    user_id = sys.argv[1]
-    url = "https://jsonplaceholder.typicode.com/"
-    user = requests.get(url + "users/{}".format(user_id)).json()
-    username = user.get("username")
-    todos = requests.get(url + "todos", params={"userId": user_id}).json()
 
-    with open("{}.json".format(user_id), "w") as jsonfile:
-        json.dump({user_id: [{
-                "task": t.get("title"),
-                "completed": t.get("completed"),
-                "username": username
-            } for t in todos]}, jsonfile)
+    if len(argv) == 2:
+        url_base = 'https://jsonplaceholder.typicode.com/users/'
+        person_url = '{}{}'.format(url_base, argv[1])
+        todos_url = '{}{}/{}'.format(url_base, argv[1], 'todos')
+
+        """ do two request
+        one for user personal info and for todos tasks
+        """
+        person_res = requests.get(person_url)
+        todos_res = requests.get(todos_url)
+
+        """ get the obj responses body"""
+        person_obj = person_res.json()
+        todos_obj = todos_res.json()
+
+        """ working with the data """
+        filename = '{}.json'.format(person_obj['id'])
+        username = person_obj['username']
+        result = []
+
+        for obj in todos_obj:
+            task = {}
+            task['task'] = obj['title']
+            task['completed'] = obj['completed']
+            task['username'] = username
+            result.append(task)
+
+        with open(filename, 'w') as f:
+            json.dump({person_obj['id']: result}, f)

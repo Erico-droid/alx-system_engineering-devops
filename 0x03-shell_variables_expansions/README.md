@@ -1,3 +1,1 @@
-## Shell, init files, variables and expansions
-
-Introduction to files,variables and expansions
+Me falta hacer el README.md

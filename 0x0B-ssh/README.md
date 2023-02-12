@@ -1,3 +1,1 @@
-## 0x0B. SSH
-
-Understanding basics of SSH and how to connect and use a server.
+I need to do README.md

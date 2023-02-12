@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
-# displays Best School 10 times, but for the 9th iteration, 
-# displays Best School and then Hi
-index=0
+# prints 'Holberton School' x 10
 
-while [ $index -lt 10 ]
+c=1
+while [ $c -le 10 ]
 do
-	if [ $index -eq 9 ]
-	then
-		echo "Hi"
-	fi
-	echo "Best School"
-	((index++))
+    if [ $c -eq 10 ]
+    then
+        echo "Hi"
+    fi
+    echo "Holberton School"
+    let c=c+1
 done

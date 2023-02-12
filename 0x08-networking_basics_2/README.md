@@ -1,3 +1,1 @@
-## 0x08. Networking basics
-
-Understanding localhost, 0.0.0.0, hosts file and netcat examples.
+# holberton-system_engineering-devops, a project about linux shell
