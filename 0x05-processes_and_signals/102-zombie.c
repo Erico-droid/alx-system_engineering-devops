@@ -1,13 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
+#include<stdio.h>
+#include<sys/wait.h>
+#include<sys/types.h>
+#include<stdlib.h>
+#include<unistd.h>
 
 /**
  * infinite_while - Run an infinite while loop.
- *
- * Return: Always 0.
+ * Return: 0
  */
 int infinite_while(void)
 {
@@ -19,9 +18,8 @@ int infinite_while(void)
 }
 
 /**
- * main - Creates five zombie processes.
- *
- * Return: Always 0.
+ * main - create five zombie processes
+ * Return: 0
  */
 int main(void)
 {
@@ -40,8 +38,6 @@ int main(void)
 		else
 			exit(0);
 	}
-
 	infinite_while();
-
 	return (EXIT_SUCCESS);
 }

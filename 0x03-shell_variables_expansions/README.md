@@ -1,1 +1,3 @@
-please read this file as it contains explanations to the codes
+## Shell, init files, variables and expansions
+
+Introduction to files,variables and expansions

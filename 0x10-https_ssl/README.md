@@ -1,1 +1,3 @@
-010-https_ssl
+## 0x10. HTTPS SSL
+
+An introduction into HTTPS and SSL Certification of my servers.

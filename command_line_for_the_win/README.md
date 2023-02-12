@@ -1,6 +1,5 @@
-# Command line for the win
+## command_line_for_the_win
 
-## Background Context:
-[CMD CHALLENGE](https://cmdchallenge.com/) is a pretty cool game challenging you on Bash skills. Everything is done via the command line and the questions are becoming increasingly complicated. It’s a good training to improve your command line skills!
+A cool game challenge on bask skills. Everything is done via the command line and the questions are becoming increasingly complicated. It’s a good training to improve your command line skills. 
 
-Twitter: @lweyajoe
+Yor can practice using this link **[CMD CHALLENGE](https://cmdchallenge.com/)**

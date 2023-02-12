@@ -1,1 +1,3 @@
-0x0E-web_stack_debugging_1
+## 0x0E. Web stack debugging #1
+
+A deep dive into the art of debugging.
