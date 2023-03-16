@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-# displays network connections, shows connections for the protocol specified by protocol
+# displays only listening sockets:
+# the PIDs of programs with their ports
 netstat -lp

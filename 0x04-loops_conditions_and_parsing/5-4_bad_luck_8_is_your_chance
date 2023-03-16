@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-# prints 'Holberton School' x 10
+# Display "Best School" x10 with good or bad luck
 
-c=1
-while [ $c -le 10 ]
+counts=1
+while [ $counts -le 10 ]
 do
-    if [ $c -eq 4 ]
+    if [ $counts -eq 4 ]
     then
         echo "bad luck"
-    elif [ $c -eq 8 ]
+    elif [ $counts -eq 8 ]
     then
         echo "good luck"
     else
-        echo "Holberton School"
+        echo "Best School"
     fi
-    let c=c+1
+    ((counts++))
 done

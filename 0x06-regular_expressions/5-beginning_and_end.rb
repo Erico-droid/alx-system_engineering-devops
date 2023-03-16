@@ -1,2 +1,3 @@
 #!/usr/bin/env ruby
-puts ARGV[0].scan(/^hbn/).join
+# regexp with dot
+puts ARGV[0].scan(/h\wn/).join

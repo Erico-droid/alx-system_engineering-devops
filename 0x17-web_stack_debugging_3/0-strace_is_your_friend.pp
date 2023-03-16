@@ -1,7 +1,6 @@
-# Fix wrong extensions on assets loading.
-
-exec { 'Fix loaded files extensions':
-    command => "sudo sed -i 's/.phpp/.php/g' wp-settings.php ",
-    path    => '/usr/bin',
-    cwd     => '/var/www/html'
+# fixes Apache 500 error; fixes typo in wordpress
+exec { 'fix typo':
+  onlyif  => 'test -e /var/www/html/wp-settings.php',
+  command => "sed -i 's/phpp/php/' /var/www/html/wp-settings.php",
+  path    => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 }

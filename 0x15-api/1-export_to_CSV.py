@@ -1,37 +1,38 @@
 #!/usr/bin/python3
 """
-get data from an api based on the userd id that is passed as argument
+Request frm API; Return TODO list progress given employee ID
+Expo this data to CSV
 """
-
 import csv
 import requests
 from sys import argv
 
 
+def to_csv():
+    """retrn API data"""
+    users = requests.get("http://jsonplaceholder.typicode.com/users")
+    for u in users.json():
+        if u.get('id') == int(argv[1]):
+            USERNAME = (u.get('username'))
+            break
+    TASK_STATU_TITLE = []
+    todos = requests.get("http://jsonplaceholder.typicode.com/todos")
+    for t in todos.json():
+        if t.get('userId') == int(argv[1]):
+            TASK_STATU_TITLE.append((t.get('completed'), t.get('title')))
+
+    """export to csv"""
+    filename = "{}.csv".format(argv[1])
+    with open(filename, "w") as csvfile:
+        fieldnames = ["USER_ID", "USERNAME",
+                      "TASK_COMPLETED_STATUS", "TASK_TITLE"]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames,
+                                quoting=csv.QUOTE_ALL)
+        for task in TASK_STATU_TITLE:
+            writer.writerow({"USER_ID": argv[1], "USERNAME": USERNAME,
+                             "TASK_COMPLETED_STATUS": task[0],
+                             "TASK_TITLE": task[1]})
+
+
 if __name__ == "__main__":
-
-    if len(argv) == 2:
-        url_base = 'https://jsonplaceholder.typicode.com/users/'
-        person_url = '{}{}'.format(url_base, argv[1])
-        todos_url = '{}{}/{}'.format(url_base, argv[1], 'todos')
-
-        """ do two request
-        one for user personal info and for todos tasks
-        """
-        person_res = requests.get(person_url)
-        todos_res = requests.get(todos_url)
-
-        """ get the obj responses body"""
-        person_obj = person_res.json()
-        todos_obj = todos_res.json()
-
-        """ working with the data """
-        name = person_obj['username']
-        filename = '{}.csv'.format(person_obj['id'])
-
-        with open(filename, 'w', newline='') as f:
-            for obj in todos_obj:
-                line = [obj['userId'], name, obj['completed'], obj['title']]
-                writer = csv.writer(f, delimiter=',', quotechar='"',
-                                    quoting=csv.QUOTE_ALL)
-                writer.writerow(line)
+    to_csv()

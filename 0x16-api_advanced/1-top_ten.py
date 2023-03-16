@@ -1,26 +1,22 @@
 #!/usr/bin/python3
 """
-Get the hottest posts from a subreddit
-limit = 0
+Query Reddit API for titles of top ten posts
 """
 import requests
-from sys import argv
 
 
 def top_ten(subreddit):
-    """ get data form reddit api"""
+    """
+        return top ten titles for given subreddit
+        return None if invalid
+    """
+    headers = requests.utils.default_headers()
+    headers.update({'User-Agent': 'My User Agent 1.0'})
 
-    query_st = 'limit=10'
-    url = 'http://www.reddit.com/r/{}/hot.json?{}'.format(subreddit, query_st)
-    userA = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0)\
-            Gecko/20100101 Firefox/76.0"
-
-    headers = {"User-Agent": userA}
-    response = requests.get(url, headers=headers)
-
-    if response.status_code == 200:
-        response = response.json()
-        for post in response['data']['children']:
-            print(post['data']['title'])
-    else:
-        return print('None')
+    url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
+    r = requests.get(url, headers=headers).json()
+    top_ten = r.get('data', {}).get('children', [])
+    if not top_ten:
+        print(None)
+    for t in top_ten:
+        print(t.get('data').get('title'))

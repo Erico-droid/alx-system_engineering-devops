@@ -1,39 +1,35 @@
 #!/usr/bin/python3
 """
-get data from an api based on the userd id that is passed as argument
+Request frm API; Return TODO list progress given employee ID
 """
-
 import requests
 from sys import argv
 
 
+def display():
+    """return API data"""
+    users = requests.get("http://jsonplaceholder.typicode.com/users")
+    for u in users.json():
+        if u.get('id') == int(argv[1]):
+            EMPLOYEE_NAME = (u.get('name'))
+            break
+    TOTAL_NUMBER_OF_TASKS = 0
+    NUMBER_OF_DONE_TASKS = 0
+    TASK_TITLE = []
+    todos = requests.get("http://jsonplaceholder.typicode.com/todos")
+    for t in todos.json():
+        if t.get('userId') == int(argv[1]):
+            TOTAL_NUMBER_OF_TASKS += 1
+            if t.get('completed') is True:
+                NUMBER_OF_DONE_TASKS += 1
+                TASK_TITLE.append(t.get('title'))
+    print("Employee {} is done with tasks({}/{}):".format
+          (EMPLOYEE_NAME,
+           NUMBER_OF_DONE_TASKS,
+           TOTAL_NUMBER_OF_TASKS))
+    for task in TASK_TITLE:
+        print("\t {}".format(task))
+
+
 if __name__ == "__main__":
-
-    if len(argv) == 2:
-        url_base = 'https://jsonplaceholder.typicode.com/users/'
-        person_url = '{}{}'.format(url_base, argv[1])
-        todos_url = '{}{}/{}'.format(url_base, argv[1], 'todos')
-
-        """ do two request
-        one for user personal info and for todos tasks
-        """
-        person_res = requests.get(person_url)
-        todos_res = requests.get(todos_url)
-
-        """ get the obj responses body"""
-        person_obj = person_res.json()
-        todos_obj = todos_res.json()
-
-        """ working with the data """
-        done_count = 0
-        done_tasks = []
-
-        for obj in todos_obj:
-            if obj['completed'] is True:
-                done_count += 1
-                done_tasks.append(obj['title'])
-
-        st = 'Employee {} is done with tasks({}/{}):'
-        print(st.format(person_obj['name'], done_count, len(todos_obj)))
-        for task in done_tasks:
-            print('\t {}'.format(task))
+    display()

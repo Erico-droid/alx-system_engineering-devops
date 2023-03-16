@@ -1,12 +1,22 @@
 #!/usr/bin/env bash
-# Configures a brand new Ubuntu machine to the redirection requirements
-apt-get update
+# Install nginx and start it
 apt-get -y install nginx
-echo "Holberton School for the win!" > /var/www/html/index.html
 
-CONFIGURED=$(grep -c "error_page 404 /404-error.html;" /etc/nginx/sites-enabled/default)
+# Firewall allows Nginx to serve on HTTP
+ufw allow 'Nginx HTTP'
 
-if [ "$CONFIGURED" = 0 ]; then
-    sed -i '/listen \[::\]:80 default_server;/a \\n\terror_page 404 /404-error.html;' /etc/nginx/sites-enabled/default
-    echo "Ceci n'est pas une page" > /var/www/html/404-error.html
-fi
+# Create a new index.html file that will be used over the default index.nginx-debian.html
+echo "Hello World!" >> /var/www/html/index.html
+
+#Give the user  ownership priviledges
+chown -R $USER:$USER /var/www/html
+chmod -R 755 /var/www
+
+# Redirect to /redirect_me
+sed -i '37i\rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
+
+# Setup 404 page
+echo "Ceci n'est pas une page\n" >> /var/www/html/error_404.html
+sed -i '38i\error_page 404 /error_404.html;' /etc/nginx/sites-available/default
+
+service nginx start

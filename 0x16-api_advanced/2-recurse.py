@@ -1,35 +1,27 @@
 #!/usr/bin/python3
-""" recursive program to get alllhot  posts from a subreddit
-    using the reddit api
-"""
-import requests
-from sys import argv
+""" recurse it """
 
 
-def do_request(subreddit, after):
-    """ Do request to endopoint"""
-    url = 'https://www.reddit.com/r/{}/hot.json?limit=50&after={}'
-    userA = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:76.0)\
-            Gecko/20100101 Firefox/76.0"
+def recurse(subreddit, hot_list=[], count=0, after=None):
+    """Queries the Reddit API"""
+    import requests
 
-    hdr = {"User-Agent": userA}
-    response = requests.get(url.format(subreddit, after), headers=hdr)
-    return response
-
-
-def recurse(subreddit, hot_list=[], after=''):
-    """ do recursion while there are a next page of
-        posts
-    """
-    res = do_request(subreddit, after)
-    if res.status_code != 200:
+    sub_info = requests.get("https://www.reddit.com/r/{}/hot.json"
+                            .format(subreddit),
+                            params={"count": count, "after": after},
+                            headers={"User-Agent": "My-User-Agent"},
+                            allow_redirects=False)
+    if sub_info.status_code >= 400:
         return None
 
-    res = res.json()
-    after = res['data']['after']
-    for post in res['data']['children']:
-        hot_list.append(post['data']['title'])
+    hot_l = hot_list + [child.get("data").get("title")
+                        for child in sub_info.json()
+                        .get("data")
+                        .get("children")]
 
-    if after is None:
-        return hot_list
-    return recurse(subreddit, hot_list, after)
+    info = sub_info.json()
+    if not info.get("data").get("after"):
+        return hot_l
+
+    return recurse(subreddit, hot_l, info.get("data").get("count"),
+                   info.get("data").get("after"))

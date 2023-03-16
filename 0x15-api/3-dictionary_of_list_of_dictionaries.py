@@ -1,37 +1,18 @@
 #!/usr/bin/python3
-"""
-get data from an api based on the userd id that is passed as argument
-"""
-
-import csv
+"""Expo to-do list info of all employees to JSON format."""
 import json
 import requests
-from sys import argv
-
 
 if __name__ == "__main__":
+    url = "https://jsonplaceholder.typicode.com/"
+    users = requests.get(url + "users").json()
 
-    url = 'https://jsonplaceholder.typicode.com/users/'
-    todos = 'https://jsonplaceholder.typicode.com/todos/'
-
-    person_obj = requests.get(url).json()
-    res = requests.get(todos).json()
-
-    """ working with the data """
-    total = {}
-
-    for user in person_obj:
-        _id = user['id']
-        result = []
-
-        for obj in res:
-            if _id == obj['userId']:
-                task = {}
-                task['task'] = obj['title']
-                task['completed'] = obj['completed']
-                task['username'] = user['username']
-                result.append(task)
-        total[_id] = result
-
-    with open('todo_all_employees.json', 'w') as f:
-        json.dump(total, f)
+    with open("todo_all_employees.json", "w") as jsonfile:
+        json.dump({
+            u.get("id"): [{
+                "task": t.get("title"),
+                "completed": t.get("completed"),
+                "username": u.get("username")
+            } for t in requests.get(url + "todos",
+                                    params={"userId": u.get("id")}).json()]
+            for u in users}, jsonfile)

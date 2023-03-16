@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
-# prints processes
-
-ps -aufx
+# This bash script displays all current processes.
+ps axuf
