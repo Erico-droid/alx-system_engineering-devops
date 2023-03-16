@@ -1,8 +1,7 @@
-# Configure ssh client so that you can connect to a server minus a password.
-Host *
-    SendEnv LANG LC_*
-    HashKnownHosts yes
-    GSSAPIAuthentication yes
-    GSSAPIDelegateCredentials no
-    IdentityFile ~/.ssh/school
-    PasswordAuthentication no
+#!/usr/bin/env bash
+# update ssh config
+Host school
+	Hostname 100.25.169.37
+	User ubuntu
+	Port 22
+	IdentityFile ~/.ssh/school
