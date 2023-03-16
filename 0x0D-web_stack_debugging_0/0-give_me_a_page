@@ -1,3 +1,2 @@
 #!/usr/bin/env bash
-# fix server not printing
 sudo service apache2 start
