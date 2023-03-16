@@ -1,18 +1,12 @@
 #!/usr/bin/env bash
-# Install nginx and start
+# Configures a brand new Ubuntu machine to the redirection requirements
+apt-get update
 apt-get -y install nginx
+echo "Holberton School for the win!" > /var/www/html/index.nginx-debian.html
+CONFIGURED=$(grep -c "rewrite ^/redirect_me / permanent;" /etc/nginx/sites-enabled/default)
 
-# Firewall setting: Allow Nginx to serve on HTTP
-ufw allow 'Nginx HTTP'
+if [ "$CONFIGURED" = 0 ]; then
+    sed -i '/listen \[::\]:80 default_server;/a \\n\trewrite ^/redirect_me / permanent;' /etc/nginx/sites-enabled/default
+fi
 
-# Override the default index file served as home page
-echo "Hello World!" >> /var/www/html/index.html
-
-#Give the user  ownership
-sudo chown -R $USER:$USER /var/www/html
-sudo chmod -R 755 /var/www
-
-# Redirect to /redirect_me
-sed -i '37i\rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/default
-
-service nginx start
+service nginx restart
