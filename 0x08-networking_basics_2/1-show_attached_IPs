@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-# the IPs displayed depends on mach
+# Bash script that displays all active IPv4 IPs on the machine it’s executed on
 
-ifconfig | grep -o -P '(?<=inet addr:).*?(?=\s)'
+ifconfig -a | grep inet | cut -d: -f2 | cut -d" " -f1

@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# Display "Best school" x10 use until
-
-counts=1
-until [ $counts -gt 10 ]
+# This script is displaying "Best School" 10 times
+index=0
+until [ $index -eq 10 ]
 do
-    echo "Best School"
-    ((counts++))
+	echo "Best School"
+	((index++))
 done
