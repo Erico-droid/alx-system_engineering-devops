@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# This script gracefully reloads Gunicorn to avoid downtime
-
 oldpid=$(<./deploy/gunicorn.pid)
 # forget the old kill -HUP 
 kill -USR2 "$oldpid"
@@ -15,10 +13,10 @@ while [[ $timeout -gt 0 ]]; do
     sleep 0.5
     (( timeout-- ))
   fi
-done;
+done
 
 # shutdown old
-echo "Success. New PID=$newpid"
+echo "success. newpid=$newpid"
 kill -WINCH "$oldpid"
 sleep 1
 kill -TERM "$oldpid"
