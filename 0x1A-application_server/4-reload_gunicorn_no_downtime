@@ -18,7 +18,7 @@ if [ -f "$PIDFILE" ]; then
         /path/to/gunicorn_start_script.sh
     fi
 else
-    echo "Gunicorn is not running, starting a new process..."
+    # echo "Gunicorn is not running, starting a new process..."
     rm -f "$PIDFILE" "$SOCKFILE"
     /path/to/gunicorn_start_script.sh
 fi
