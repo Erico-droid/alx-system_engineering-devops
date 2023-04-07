@@ -15,10 +15,10 @@ if [ -f "$PIDFILE" ]; then
     else
         echo "Gunicorn process $PID is not running, starting a new process..."
         rm -f "$PIDFILE" "$SOCKFILE"
-        /path/to/gunicorn_start_script.sh
+        # /path/to/gunicorn_start_script.sh
     fi
 else
     # echo "Gunicorn is not running, starting a new process..."
     rm -f "$PIDFILE" "$SOCKFILE"
-    /path/to/gunicorn_start_script.sh
+    # /path/to/gunicorn_start_script.sh
 fi
