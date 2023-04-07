@@ -1,22 +1,24 @@
 #!/usr/bin/env bash
+# This script gracefully restarts the Gunicorn process serving the myapp application
 
-# This Bash script gracefully restarts Gunicorn by
-# reloading workers one at a time
+set -e
 
-echo "Checking if Gunicorn is running..."
+PIDFILE="/run/gunicorn.pid"
+SOCKFILE="/run/gunicorn.sock"
 
-# Check if Gunicorn is running by searching for its process ID
-GUNICORN_PID=$(pgrep -f "gunicorn.*myapp")
-
-if [[ -z "$GUNICORN_PID" ]]; then
-  echo "Gunicorn is not running, starting a new process..."
-  # Start Gunicorn with 3 workers
-  gunicorn -w 3 myapp:app -b 0.0.0.0:8000 --pid /run/gunicorn.pid --daemon
-  echo "Gunicorn started with PID $(cat /run/gunicorn.pid)"
+# Check if the Gunicorn process is running
+if [ -f "$PIDFILE" ]; then
+    PID=$(cat "$PIDFILE")
+    if ps -p "$PID" > /dev/null; then
+        echo "Sending graceful restart signal to Gunicorn process $PID"
+        kill -HUP "$PID"
+    else
+        echo "Gunicorn process $PID is not running, starting a new process..."
+        rm -f "$PIDFILE" "$SOCKFILE"
+        # /path/to/gunicorn_start_script.sh
+    fi
 else
-  echo "Gunicorn is running with PID $GUNICORN_PID"
-  echo "Reloading Gunicorn gracefully..."
-  # Send a HUP signal to Gunicorn to gracefully restart workers
-  kill -s HUP "$GUNICORN_PID"
-  echo "Gunicorn reloaded"
+    # echo "Gunicorn is not running, starting a new process..."
+    rm -f "$PIDFILE" "$SOCKFILE"
+    /path/to/gunicorn_start_script.sh
 fi
