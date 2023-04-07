@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# This script gracefully restarts the Gunicorn process serving the myapp application
+
+set -e
+
+PIDFILE=/run/gunicorn.pid
+SOCKFILE=/run/gunicorn.sock
+
+# Check if the Gunicorn process is running
+if [ -f $PIDFILE ]; then
+    PID=$(cat $PIDFILE)
+    if ps -p $PID > /dev/null; then
+        echo "Sending graceful restart signal to Gunicorn process $PID"
+        kill -HUP $PID
+    else
+        echo "Gunicorn process $PID is not running, starting a new process..."
+        rm -f $PIDFILE $SOCKFILE
+        /path/to/gunicorn_start_script.sh
+    fi
+else
+    echo "Gunicorn is not running, starting a new process..."
+    rm -f $PIDFILE $SOCKFILE
+    /path/to/gunicorn_start_script.sh
+fi
