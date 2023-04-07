@@ -6,7 +6,7 @@
 echo "Checking if Gunicorn is running..."
 
 # Check if Gunicorn is running by searching for its process ID
-GUNICORN_PID="$(pgrep gunicorn)"
+GUNICORN_PID=$(pgrep -f "gunicorn.*myapp")
 
 if [[ -z "$GUNICORN_PID" ]]; then
   echo "Gunicorn is not running, starting a new process..."
@@ -17,6 +17,6 @@ else
   echo "Gunicorn is running with PID $GUNICORN_PID"
   echo "Reloading Gunicorn gracefully..."
   # Send a HUP signal to Gunicorn to gracefully restart workers
-  kill -HUP "$GUNICORN_PID"
+  kill -s HUP "$GUNICORN_PID"
   echo "Gunicorn reloaded"
 fi
